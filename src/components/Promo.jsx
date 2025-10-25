@@ -8,8 +8,8 @@ const Promo = ({ openModal }) => {
       className="section"
       style={{
         background: `
-          radial-gradient(ellipse 100% 100% at 50% 10%, rgba(0, 85, 204, 0.15) 0%, transparent 50%),
-          linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)
+          radial-gradient(ellipse 100% 100% at 50% 10%, rgba(0, 95, 204, 0.25) 0%, transparent 50%),
+          linear-gradient(135deg, #ffffff 0%, #f1f7ff 100%)
         `
       }}
     >
