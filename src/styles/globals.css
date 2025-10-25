@@ -374,7 +374,18 @@ html {
   outline: none;
 }
 
-/* 반응형 유틸리티 클래스 - Tailwind 방식으로 대체 예정 */
+/* 네비게이션 반응형 */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-cta {
+    display: none !important;
+  }
+}
 
 /* 접근성 개선 */
 @media (prefers-reduced-motion: reduce) {

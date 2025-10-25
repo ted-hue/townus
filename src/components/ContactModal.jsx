@@ -63,7 +63,7 @@ const ContactModal = ({ isOpen, onClose, title = "서비스 신청하기" }) => 
     try {
       console.log('제출할 데이터:', submitData);
       
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzjmBGYQ1b_5Q1ScLm2YAEQDvtY5qi6lwV0vakcTlUgj21Lq7xXyhdQHa33dmBr_jZTQQ/exec', {
+      await fetch('https://script.google.com/macros/s/AKfycbzjmBGYQ1b_5Q1ScLm2YAEQDvtY5qi6lwV0vakcTlUgj21Lq7xXyhdQHa33dmBr_jZTQQ/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: {
