@@ -8,14 +8,57 @@ const ContactModal = ({ isOpen, onClose, title = "서비스 신청하기" }) => 
     name: '',
     phone: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 폼 제출 로직 (여기서는 콘솔로 출력)
-    console.log('폼 데이터:', formData);
-    alert('신청이 완료되었습니다! 빠른 시간 내에 연락드리겠습니다.');
-    setFormData({ company: '', name: '', phone: '' });
-    onClose();
+    setIsLoading(true);
+    setMessage({ type: '', text: '' });
+
+    try {
+      const response = await fetch('https://script.google.com/a/macros/keystoneclub.co.kr/s/AKfycbxzi16NQkfhIVu06BGEtZ8jMl8-GX-ts0VNz_-CZMU2KJFmayv60r5nx6Hq3IkZshU0ZA/exec', {
+        method: 'POST',
+        mode: 'no-cors', // CORS 문제 해결
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          companyName: formData.company,
+          managerName: formData.name,
+          phoneNumber: formData.phone,
+          timestamp: new Date().toISOString()
+        })
+      });
+
+      // no-cors 모드에서는 응답을 읽을 수 없으므로 성공으로 간주
+      setMessage({ 
+        type: 'success', 
+        text: '✅ 신청이 완료되었습니다. 곧 연락드리겠습니다.' 
+      });
+      setFormData({ company: '', name: '', phone: '' });
+      
+      // 3초 후 모달 닫기
+      setTimeout(() => {
+        onClose();
+      }, 2000);
+
+    } catch (error) {
+      console.error('Form submission error:', error);
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        setMessage({ 
+          type: 'error', 
+          text: '❌ 네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.' 
+        });
+      } else {
+        setMessage({ 
+          type: 'error', 
+          text: '❌ 오류가 발생했습니다. 다시 시도해주세요.' 
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -78,7 +121,7 @@ const ContactModal = ({ isOpen, onClose, title = "서비스 신청하기" }) => 
                       value={formData.company}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all duration-200"
                       placeholder="회사명을 입력해주세요"
                     />
                   </div>
@@ -94,7 +137,7 @@ const ContactModal = ({ isOpen, onClose, title = "서비스 신청하기" }) => 
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all duration-200"
                       placeholder="담당자명을 입력해주세요"
                     />
                   </div>
@@ -110,11 +153,22 @@ const ContactModal = ({ isOpen, onClose, title = "서비스 신청하기" }) => 
                       value={formData.phone}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all duration-200"
                       placeholder="010-1234-5678"
                     />
                   </div>
                 </div>
+
+                {/* 메시지 표시 영역 */}
+                {message.text && (
+                  <div className={`mt-4 p-3 rounded-xl text-sm font-medium ${
+                    message.type === 'success' 
+                      ? 'bg-green-100 text-green-800 border border-green-200' 
+                      : 'bg-red-100 text-red-800 border border-red-200'
+                  }`}>
+                    {message.text}
+                  </div>
+                )}
 
                 {/* 개인정보 동의 */}
                 <div className="mt-4">
@@ -122,7 +176,7 @@ const ContactModal = ({ isOpen, onClose, title = "서비스 신청하기" }) => 
                     <input
                       type="checkbox"
                       required
-                      className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-600"
                     />
                     <span className="text-xs text-gray-600 leading-relaxed">
                       개인정보 수집 및 이용에 동의합니다. 수집된 정보는 상담 목적으로만 사용되며, 상담 완료 후 안전하게 폐기됩니다.
@@ -133,16 +187,23 @@ const ContactModal = ({ isOpen, onClose, title = "서비스 신청하기" }) => 
                 {/* 제출 버튼 */}
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full mt-6 py-4 text-white font-semibold rounded-xl transition-all duration-200"
-                  style={{
-                    backgroundColor: '#005FCC'
-                  }}
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#004FA0'}
-                  onMouseLeave={(e) => e.target.style.backgroundColor = '#005FCC'}
+                  disabled={isLoading}
+                  whileHover={!isLoading ? { scale: 1.02 } : {}}
+                  whileTap={!isLoading ? { scale: 0.98 } : {}}
+                  className={`w-full mt-6 py-4 text-white font-semibold rounded-xl transition-all duration-200 ${
+                    isLoading 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
+                  }`}
                 >
-                  신청하기
+                  {isLoading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      전송 중...
+                    </div>
+                  ) : (
+                    '신청하기'
+                  )}
                 </motion.button>
               </form>
             </motion.div>
