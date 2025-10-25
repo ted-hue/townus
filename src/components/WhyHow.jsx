@@ -64,7 +64,15 @@ const WhyHow = () => {
   const currentItem = allSlides[currentSlide];
 
   return (
-    <section id="why-how" className="py-20 bg-white">
+    <section 
+      id="why-how" 
+      className="py-20 bg-white"
+      style={{ 
+        contain: 'layout style',
+        transform: 'translateZ(0)',
+        isolation: 'isolate'
+      }}
+    >
       <div className="max-w-7xl mx-auto px-6 md:px-16 lg:px-20">
         
         {/* 헤더 */}
@@ -87,13 +95,14 @@ const WhyHow = () => {
 
         {/* 슬라이더 컨테이너 */}
         <div className="relative max-w-6xl mx-auto">
-          <div className="overflow-visible rounded-2xl mx-4 md:mx-20">
+          <div className="overflow-hidden rounded-2xl mx-4 md:mx-20">
             <motion.div
               key={currentSlide}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
               className="py-4"
+              style={{ contain: 'layout' }}
             >
 
               {/* HOW 카드 */}

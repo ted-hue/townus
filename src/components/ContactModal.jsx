@@ -11,61 +11,107 @@ const ContactModal = ({ isOpen, onClose, title = "서비스 신청하기" }) => 
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
+  const validatePhone = (phone) => {
+    // 숫자만 추출
+    const digits = phone.replace(/\D/g, '');
+    
+    // 010, 011, 016, 017, 018, 019로 시작하는 11자리 또는 10자리 번호
+    const phoneRegex = /^(010|011|016|017|018|019)\d{7,8}$/;
+    
+    return phoneRegex.test(digits);
+  };
+
+  const formatPhone = (phone) => {
+    // 숫자만 추출
+    const digits = phone.replace(/\D/g, '');
+    
+    // 010-1234-5678 형태로 포맷
+    if (digits.length >= 11) {
+      return digits.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    } else if (digits.length >= 7) {
+      return digits.replace(/(\d{3})(\d{3,4})(\d{0,4})/, '$1-$2-$3').replace(/-$/, '');
+    }
+    return digits;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setMessage({ type: '', text: '' });
 
+    // 전화번호 유효성 검사
+    if (!validatePhone(formData.phone)) {
+      setMessage({ 
+        type: 'error', 
+        text: '❌ 올바른 휴대폰 번호를 입력해주세요. (010-1234-5678 형식)' 
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    // 폼 데이터 준비
+    const submitData = {
+      companyName: formData.company,
+      managerName: formData.name,
+      phoneNumber: formData.phone,
+      timestamp: new Date().toLocaleString('ko-KR'),
+      source: 'TownUs Website'
+    };
+
+    console.log('제출할 데이터:', submitData);
+
     try {
-      const response = await fetch('https://script.google.com/a/macros/keystoneclub.co.kr/s/AKfycbxzi16NQkfhIVu06BGEtZ8jMl8-GX-ts0VNz_-CZMU2KJFmayv60r5nx6Hq3IkZshU0ZA/exec', {
+      console.log('제출할 데이터:', submitData);
+      
+      const response = await fetch('https://script.google.com/macros/s/AKfycbzjmBGYQ1b_5Q1ScLm2YAEQDvtY5qi6lwV0vakcTlUgj21Lq7xXyhdQHa33dmBr_jZTQQ/exec', {
         method: 'POST',
-        mode: 'no-cors', // CORS 문제 해결
+        mode: 'no-cors',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({
-          companyName: formData.company,
-          managerName: formData.name,
-          phoneNumber: formData.phone,
-          timestamp: new Date().toISOString()
-        })
+        body: new URLSearchParams(submitData)
       });
 
-      // no-cors 모드에서는 응답을 읽을 수 없으므로 성공으로 간주
+      console.log('Google Sheets 전송 완료');
+      
       setMessage({ 
         type: 'success', 
         text: '✅ 신청이 완료되었습니다. 곧 연락드리겠습니다.' 
       });
       setFormData({ company: '', name: '', phone: '' });
       
-      // 3초 후 모달 닫기
+      // 2초 후 모달 닫기
       setTimeout(() => {
         onClose();
       }, 2000);
 
     } catch (error) {
       console.error('Form submission error:', error);
-      if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        setMessage({ 
-          type: 'error', 
-          text: '❌ 네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.' 
-        });
-      } else {
-        setMessage({ 
-          type: 'error', 
-          text: '❌ 오류가 발생했습니다. 다시 시도해주세요.' 
-        });
-      }
+      setMessage({ 
+        type: 'error', 
+        text: '❌ 전송에 실패했습니다. 잠시 후 다시 시도해주세요.' 
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    
+    if (name === 'phone') {
+      // 전화번호 입력 시 자동 포맷팅 및 숫자만 허용
+      const formatted = formatPhone(value);
+      setFormData({
+        ...formData,
+        [name]: formatted
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
   };
 
   return (
@@ -153,9 +199,13 @@ const ContactModal = ({ isOpen, onClose, title = "서비스 신청하기" }) => 
                       value={formData.phone}
                       onChange={handleChange}
                       required
+                      maxLength="13"
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all duration-200"
                       placeholder="010-1234-5678"
                     />
+                    <p className="mt-1 text-xs text-gray-500">
+                      휴대폰 번호를 입력하시면 자동으로 포맷됩니다
+                    </p>
                   </div>
                 </div>
 

@@ -71,6 +71,7 @@ body {
   background-color: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 /* 공통 컴포넌트 클래스 */
@@ -347,22 +348,20 @@ textarea:focus-visible {
   animation: bounce 2s infinite;
 }
 
-/* 스크롤바 스타일링 */
+/* 스크롤바 완전히 숨기기 */
 ::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-neutral-light);
+  width: 0px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-secondary);
-  border-radius: 3px;
+  background: transparent;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
+/* Firefox 스크롤바 숨기기 */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 /* 포커스 아웃라인 개선 */
@@ -420,11 +419,11 @@ textarea:focus-visible {
   }
   
   /* 모바일 네비게이션 조정 */
-  nav {
+  nav > div {
     padding: 0 20px !important;
   }
   
-  nav > div:last-child {
+  nav > div > div:last-child {
     gap: 1.5rem !important;
   }
   
