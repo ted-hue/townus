@@ -108,7 +108,7 @@ const WhyHow = () => {
               {/* HOW 카드 */}
               {currentItem.type === 'how' && (
                 <div className={`${currentItem.bgColor} text-white py-12 px-8 md:p-12 w-full rounded-2xl`}>
-                  <div className="grid lg:grid-cols-2 gap-6 md:gap-12 items-center h-full">
+                  <div className="grid lg:grid-cols-2 gap-6 md:gap-12 items-center h-full justify-items-center">
                     
                     {/* 왼쪽: 아이콘과 기본 정보 */}
                     <div className="text-center lg:text-left">

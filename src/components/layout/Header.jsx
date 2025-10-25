@@ -24,7 +24,12 @@ const Header = () => {
       <div className="section-container">
         <div className="flex items-center justify-between h-16">
           {/* 로고 */}
-          <h1 className="text-2xl font-bold text-gray-900">타운어스</h1>
+          <h1 
+            className="text-2xl font-bold text-gray-900 cursor-pointer hover:text-blue-500 transition-colors"
+            onClick={() => window.location.reload()}
+          >
+            타운어스
+          </h1>
 
           {/* 데스크탑 네비게이션 */}
           <nav className="hidden md:flex items-center space-x-8">

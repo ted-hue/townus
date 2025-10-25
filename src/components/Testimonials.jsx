@@ -149,7 +149,7 @@ const Testimonials = () => {
               {testimonials.map((testimonial, index) => (
                 <div
                   key={index}
-                  className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] pl-4"
+                  className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] pl-4 flex justify-center"
                 >
                   <motion.div
                     whileHover={{
@@ -157,10 +157,9 @@ const Testimonials = () => {
                       boxShadow: "0 8px 25px rgba(0,0,0,0.1)",
                       transition: { duration: 0.3 }
                     }}
-                    className="mx-2 rounded-xl p-6 shadow-sm border border-gray-200 h-full transition-all duration-300"
+                    className="mx-2 rounded-xl p-6 shadow-sm border border-gray-200 h-full transition-all duration-300 w-full max-w-sm"
                     style={{
-                      backgroundColor: '#FFFFFF',
-                      maxWidth: '400px'
+                      backgroundColor: '#FFFFFF'
                     }}
                   >
                     {/* 별점 */}

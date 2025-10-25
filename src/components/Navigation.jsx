@@ -8,7 +8,7 @@ const Navigation = () => {
   const [activeSection, setActiveSection] = useState('');
 
   const navLinks = useMemo(() => [
-    { name: "왜 타운어스", href: "#why" },
+    { name: "소개", href: "#why" },
     { name: "우리의 차별점", href: "#how" },
     { name: "서비스", href: "#what" },
     { name: "진행 과정", href: "#process" },
@@ -44,8 +44,7 @@ const Navigation = () => {
   }, [navLinks]);
 
   const scrollToTop = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setIsMenuOpen(false);
+    window.location.reload();
   }, []);
 
   const scrollToSection = useCallback((href) => {

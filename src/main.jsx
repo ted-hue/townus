@@ -61,14 +61,17 @@ function App() {
           position: 'relative',
           transform: 'translateZ(0)'
         }}>
-          <div style={{ 
+          <div 
+            onClick={() => window.location.reload()}
+            style={{ 
             fontSize: '1.3rem', 
             fontWeight: '700',
             color: '#005FCC',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            flex: '0 0 auto'
+            flex: '0 0 auto',
+            cursor: 'pointer'
           }}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6 7V21C6 21.5523 6.44772 22 7 22H17C17.5523 22 18 21.5523 18 21V7" stroke="#005FCC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -87,7 +90,7 @@ function App() {
           }}
           onMouseEnter={(e) => e.target.style.color = '#005FCC'}
           onMouseLeave={(e) => e.target.style.color = '#6b7280'}
-          >왜 타운어스</a>
+          >소개</a>
           <a href="#what" style={{ 
             color: '#6b7280', 
             textDecoration: 'none',

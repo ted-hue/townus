@@ -374,25 +374,25 @@ html {
   outline: none;
 }
 
-/* Hero 섹션 반응형 */
-.hero-container {
+/* Hero 섹션 반응형 - 더 구체적으로 타겟팅 */
+section .hero-container {
   flex-direction: row !important;
 }
 
 @media (max-width: 1024px) {
-  .hero-container {
+  section .hero-container {
     flex-direction: column !important;
     gap: 40px !important;
     text-align: center !important;
     padding: 0 40px !important;
   }
   
-  .hero-container > div:first-child {
+  section .hero-container > div:first-child {
     width: 100% !important;
     text-align: center !important;
   }
   
-  .hero-container > div:last-child {
+  section .hero-container > div:last-child {
     width: 100% !important;
   }
 }

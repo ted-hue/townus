@@ -13,7 +13,7 @@ const Hero = ({ openModal }) => {
     <section 
       className="min-h-[600px] md:min-h-[700px] lg:min-h-[800px] 
                  pt-20 md:pt-24 lg:pt-28
-                 pb-10 md:pb-16 lg:pb-20 
+                 pb-20 md:pb-24 lg:pb-28 
  
                  flex items-center justify-center"
       style={{

@@ -45,7 +45,7 @@ const Why = () => {
         </motion.div>
 
         {/* 4개 카드 그리드 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg place-items-center max-w-6xl mx-auto">
           {cards.map((card, index) => (
             <motion.div
               key={index}
